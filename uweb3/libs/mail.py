@@ -8,6 +8,7 @@ __version__ = '0.3'
 import base64
 import os
 import smtplib
+from io import IOBase
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -116,8 +117,8 @@ class SendMailContext:
         contents = contents.read()
     elif isinstance(attachment, str):
       name = os.path.basename(attachment)
-      contents = file(attachment, 'rb').read()
-    elif isinstance(attachment, file):
+      contents = open(attachment, 'rb').read()
+    elif isinstance(attachment, IOBase):
       name = os.path.basename(attachment.name)
       attachment.seek(0)
       contents = attachment.read()
