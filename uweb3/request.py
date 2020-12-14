@@ -87,13 +87,13 @@ class Request:
   @property
   def response(self):
     if self._response is None:
-      self._response = response.Response()
+      self._response = response.Response(headers=self._out_headers)
     return self._response
 
   def Redirect(self, location, httpcode=307):
     REDIRECT_PAGE = ('<!DOCTYPE html><html><head><title>Page moved</title></head>'
-                   '<body>Page moved, please follow <a href="{}">this link</a>'
-                   '</body></html>').format(location)
+                     '<body>Page moved, please follow <a href="{}">this link</a>'
+                     '</body></html>').format(location)
 
     headers = {'Location': location}
     if self.response.headers.get('Set-Cookie'):
@@ -155,6 +155,8 @@ class Request:
         self.response.headers['Set-Cookie'] = [value]
         return
       self.response.headers['Set-Cookie'].append(value)
+      return
+    self.response.AddHeader(name, value)
 
   def DeleteCookie(self, name):
     """Deletes cookie by name

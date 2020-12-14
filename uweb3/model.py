@@ -1245,12 +1245,13 @@ class Record(BaseRecord):
       if (othertable != thistable and
           othertable not in tables):
         fkey = cls._FOREIGN_RELATIONS.get(classname, False)
-        key = table._PRIMARY_KEY
+        key = othertable._PRIMARY_KEY
         if fkey and fkey.get('LookupKey', False):
           key = fkey.get('LookupKey')
         elif getattr(table, "RecordKey", None):
-          key = table.RecordKey()
+          key = othertable.RecordKey()
         # add the cross table join
+        #TODO use referenced field, instead of just the othertable name
         conditions.append('`%s`.`%s` = `%s`.`%s' % (thistable,
             othertable,
             othertable,
@@ -1394,7 +1395,7 @@ class VersionedRecord(Record):
         if type(conditions) == list:
           conditions.extend(searchconditions)
         else:
-          newconditions.append(conditions)
+          searchconditions.append(conditions)
           conditions = searchconditions
       else:
         conditions = searchconditions

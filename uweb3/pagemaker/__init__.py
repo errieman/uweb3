@@ -337,7 +337,7 @@ class BasePageMaker(Base):
       classlist = pyclbr.readmodule_ex(module)
       for name, data in classlist.items():
         if hasattr(data, 'super') and 'PageMaker' in data.super[0]:
-          module = __import__(f, fromlist=[name])
+          module = __import__(file, fromlist=[name])
           bases.append(getattr(module, name))
     return bases
 

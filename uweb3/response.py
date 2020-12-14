@@ -22,7 +22,7 @@ class Response:
 
   def __init__(self, content='', content_type=CONTENT_TYPE,
                httpcode=200, headers=None, **kwds):
-    """Initializes a Page object.
+    """Initializes a Response object.
 
     Arguments:
       @ content: str
@@ -96,6 +96,14 @@ class Response:
 
   def __str__(self):
     return self.content
+
+  def SetHeaders(self, headers):
+    """Instantly set all headers for this Response """
+    self.headers = headers
+
+  def AddHeader(self, header, value):
+    """Adds a header to this response's output list"""
+    self.headers[header] = value
 
 
 class Redirect(Response):
